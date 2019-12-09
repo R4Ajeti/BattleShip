@@ -1,0 +1,28 @@
+{
+  "name": "battleship",
+  "version": "1.0.0",
+  "description": "Battleship is a strategy type guessing game for two players. It is played on ruled grids (paper or board) on which each player's fleet of ships (including battleships) are marked",
+  "main": "index.js",
+  "scripts": {
+    "test": "t",
+    "build": "webpack src/js/app.js dist/bundle.js",
+    "build:prod": "webpack src/js/app.js dist/bundle.js -p"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/R4Ajeti/BattleShip.git"
+  },
+  "keywords": [
+    "battleship"
+  ],
+  "author": "Rinor Ajeti",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/R4Ajeti/BattleShip/issues"
+  },
+  "homepage": "https://github.com/R4Ajeti/BattleShip#readme",
+  "devDependencies": {
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  }
+}
