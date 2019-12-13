@@ -1,5 +1,4 @@
 var webpack = require('webpack')
-const { VueLoaderPlugin } = require('vue-loader')
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -44,14 +43,9 @@ module.exports = {
                 //the images will be emited to dist/assets/images/ folder
             }
         },
-        {
-            test: /\.vue$/,
-            loader: 'vue-loader'
-        }
         ]
     },
     plugins: [
-        new VueLoaderPlugin(),
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: ['**/*', '!php*', '!php/**/*', '!.git*', '!.git/**/*', '!robots.txt'],
         }),

@@ -1,21 +1,13 @@
-import Vue from 'vue'
-import Vuex from 'vuex';
-import axios from 'axios'
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-undef */
+/* eslint-disable import/no-unresolved */
+/* eslint arrow-parens: ["error", "as-needed"] */
 
-Vue.use(Vuex)
-
-import router from './vue/router/index.js';
-import store from './vue/store/store.js';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap';
+import axios from 'axios';
 
 import './css/style.css';
 
-Vue.prototype.$http = axios 
 
+const content = document.querySelector('div.content');
 
-new Vue({
-    store,
-    router,
-}).$mount('#app')
+content.appendChild(document.createTextNode('ggdff'));

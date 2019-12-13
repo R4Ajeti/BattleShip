@@ -1,11 +1,10 @@
 {
     "env": {
-        "browser": true,
+        "browser": false,
         "es6": true
     },
     "extends": [
-        "eslint:recommended",
-        "plugin:vue/essential"
+        "airbnb-base"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -14,9 +13,6 @@
     "parserOptions": {
         "ecmaVersion": 2018
     },
-    "plugins": [
-        "vue"
-    ],
     "rules": {
     }
 }
