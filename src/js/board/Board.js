@@ -15,8 +15,34 @@ export default function Board() {
   // const a = new Block();
   // console.log(a);
 
+  let sibs;
+  let axis = 'x';
+
+  this.el.onclick = (e) => {
+    sibs.forEach((blk) => {
+      this.blocks[blk].clean();
+    });
+
+    axis = axis === 'x' ? 'y' : 'x';
+    sibs = e.target.getSiblings(axis, 3);
+
+    sibs.forEach((blk) => {
+      this.blocks[blk].paint();
+    });
+  };
+
   this.el.onmouseover = (e) => {
-    console.log(e.target.sayName());
+    sibs = e.target.getSiblings(axis, 3);
+
+    sibs.forEach((blk) => {
+      this.blocks[blk].paint();
+    });
+  };
+
+  this.el.onmouseout = (e) => {
+    sibs.forEach((blk) => {
+      this.blocks[blk].clean();
+    });
   };
 }
 

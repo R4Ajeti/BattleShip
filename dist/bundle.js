@@ -1860,7 +1860,7 @@ module.exports = function isBuffer (obj) {
 
 exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
 // Module
-exports.push([module.i, "li {\n  box-sizing: border-box;\n  background-color: red;\n  border: 1px solid;\n  padding: 5px;\n  width: 60px;\n  height: 60px;\n}", ""]);
+exports.push([module.i, "li {\n  color: white;\n  box-sizing: border-box;\n  background-color: #790707;\n  border: 1px solid;\n  padding: 5px;\n  width: 60px;\n  height: 60px;\n}", ""]);
 
 
 /***/ }),
@@ -1888,7 +1888,7 @@ exports.push([module.i, "ul{\n  display: flex;\n  width: 600px;\n  flex-wrap: wr
 
 exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
 // Module
-exports.push([module.i, "body{\n  box-sizing: border-box;\n}", ""]);
+exports.push([module.i, "body{\n  box-sizing: border-box;\n  background-color: rgb(58, 57, 57);\n}", ""]);
 
 
 /***/ }),
@@ -2611,18 +2611,62 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class Block extends HTMLLIElement {
-  constructor(name) {
+  constructor(blkId) {
     super();
-    this.name = name;
+    this.appendChild(document.createTextNode(blkId));
+    this.blkId = blkId;
   }
 
   sayName() {
+    console.log(this.getSibblings());
+  }
+
+  clean() {
+    this.style.backgroundColor = '#790707';
+  }
+
+  paint() {
     this.style.backgroundColor = 'green';
+  }
+
+  getSiblings(axis = 'x', dist = 2) {
+    const sibs = [];
+    let min;
+    let max;
+    let rmin;
+    let inc;
+
+    if (axis === 'x') {
+      const fl = Math.floor(this.blkId / 10);
+      min = fl * 10;
+      max = fl * 10 + 9;
+      rmin = Math.abs(this.blkId + dist);
+      inc = 1;
+    }
+
+    if (axis === 'y') {
+      const dv = this.blkId / 10;
+      min = 10 * (dv - Math.floor(dv)).toFixed(2);
+      max = min + 90;
+      rmin = Math.abs(this.blkId + dist * 10);
+      inc = 10;
+    }
+
+    let i = dist < 0 ? rmin : this.blkId;
+    i = i >= min ? i : min;
+    let f = dist < 0 ? this.blkId : rmin;
+    f = f <= max ? f : max;
+
+    for (i; i <= f; i += inc) {
+      sibs.push(i);
+    }
+
+    return sibs;
   }
 
 }
 
-customElements.define('board-block', Block, {
+customElements.define('blk-br', Block, {
   extends: 'li'
 });
 /* harmony default export */ __webpack_exports__["default"] = (Block);
@@ -2658,8 +2702,31 @@ function Board() {
   // console.log(a);
 
 
+  let sibs;
+  let axis = 'x';
+
+  this.el.onclick = e => {
+    sibs.forEach(blk => {
+      this.blocks[blk].clean();
+    });
+    axis = axis === 'x' ? 'y' : 'x';
+    sibs = e.target.getSiblings(axis, 3);
+    sibs.forEach(blk => {
+      this.blocks[blk].paint();
+    });
+  };
+
   this.el.onmouseover = e => {
-    console.log(e.target.sayName());
+    sibs = e.target.getSiblings(axis, 3);
+    sibs.forEach(blk => {
+      this.blocks[blk].paint();
+    });
+  };
+
+  this.el.onmouseout = e => {
+    sibs.forEach(blk => {
+      this.blocks[blk].clean();
+    });
   };
 }
 

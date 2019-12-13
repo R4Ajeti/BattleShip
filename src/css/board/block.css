@@ -1,6 +1,7 @@
 li {
+  color: white;
   box-sizing: border-box;
-  background-color: red;
+  background-color: #790707;
   border: 1px solid;
   padding: 5px;
   width: 60px;
