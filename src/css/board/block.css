@@ -1,0 +1,8 @@
+li {
+  box-sizing: border-box;
+  background-color: red;
+  border: 1px solid;
+  padding: 5px;
+  width: 60px;
+  height: 60px;
+}

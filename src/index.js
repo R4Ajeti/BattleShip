@@ -6,8 +6,11 @@
 import axios from 'axios';
 
 import './css/style.css';
+import Board from './js/board/Board';
 
 
 const content = document.querySelector('div.content');
+const mBoard = new Board();
+mBoard.draw();
 
-content.appendChild(document.createTextNode('ggdff'));
+content.appendChild(mBoard.el);

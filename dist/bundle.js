@@ -1851,6 +1851,34 @@ module.exports = function isBuffer (obj) {
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/css/board/block.css":
+/*!***********************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/css/board/block.css ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
+// Module
+exports.push([module.i, "li {\n  box-sizing: border-box;\n  background-color: red;\n  border: 1px solid;\n  padding: 5px;\n  width: 60px;\n  height: 60px;\n}", ""]);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/css/board/board.css":
+/*!***********************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/css/board/board.css ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
+// Module
+exports.push([module.i, "ul{\n  display: flex;\n  width: 600px;\n  flex-wrap: wrap;\n  list-style: none;\n  padding: 0;\n}", ""]);
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js!./src/css/style.css":
 /*!*****************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./src/css/style.css ***!
@@ -1860,7 +1888,7 @@ module.exports = function isBuffer (obj) {
 
 exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
 // Module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "body{\n  box-sizing: border-box;\n}", ""]);
 
 
 /***/ }),
@@ -2454,6 +2482,60 @@ module.exports = function (list, options) {
 
 /***/ }),
 
+/***/ "./src/css/board/block.css":
+/*!*********************************!*\
+  !*** ./src/css/board/block.css ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader/dist/cjs.js!./block.css */ "./node_modules/css-loader/dist/cjs.js!./src/css/board/block.css");
+
+if (typeof content === 'string') {
+  content = [[module.i, content, '']];
+}
+
+var options = {}
+
+options.insert = "head";
+options.singleton = false;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js")(content, options);
+
+if (content.locals) {
+  module.exports = content.locals;
+}
+
+
+/***/ }),
+
+/***/ "./src/css/board/board.css":
+/*!*********************************!*\
+  !*** ./src/css/board/board.css ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader/dist/cjs.js!./board.css */ "./node_modules/css-loader/dist/cjs.js!./src/css/board/board.css");
+
+if (typeof content === 'string') {
+  content = [[module.i, content, '']];
+}
+
+var options = {}
+
+options.insert = "head";
+options.singleton = false;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js")(content, options);
+
+if (content.locals) {
+  module.exports = content.locals;
+}
+
+
+/***/ }),
+
 /***/ "./src/css/style.css":
 /*!***************************!*\
   !*** ./src/css/style.css ***!
@@ -2494,6 +2576,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _css_style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./css/style.css */ "./src/css/style.css");
 /* harmony import */ var _css_style_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_css_style_css__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _js_board_Board__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./js/board/Board */ "./src/js/board/Board.js");
 /* eslint-disable no-param-reassign */
 
 /* eslint-disable no-undef */
@@ -2503,8 +2586,103 @@ __webpack_require__.r(__webpack_exports__);
 /* eslint arrow-parens: ["error", "as-needed"] */
 
 
+
 const content = document.querySelector('div.content');
-content.appendChild(document.createTextNode('ggdff'));
+const mBoard = new _js_board_Board__WEBPACK_IMPORTED_MODULE_2__["default"]();
+mBoard.draw();
+content.appendChild(mBoard.el);
+
+/***/ }),
+
+/***/ "./src/js/board/Block.js":
+/*!*******************************!*\
+  !*** ./src/js/board/Block.js ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _css_board_block_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../css/board/block.css */ "./src/css/board/block.css");
+/* harmony import */ var _css_board_block_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_css_board_block_css__WEBPACK_IMPORTED_MODULE_0__);
+/* eslint-disable no-undef */
+
+/* eslint arrow-parens: ["error", "as-needed"] */
+
+
+class Block extends HTMLLIElement {
+  constructor(name) {
+    super();
+    this.name = name;
+  }
+
+  sayName() {
+    this.style.backgroundColor = 'green';
+  }
+
+}
+
+customElements.define('board-block', Block, {
+  extends: 'li'
+});
+/* harmony default export */ __webpack_exports__["default"] = (Block);
+
+/***/ }),
+
+/***/ "./src/js/board/Board.js":
+/*!*******************************!*\
+  !*** ./src/js/board/Board.js ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Board; });
+/* harmony import */ var _Piece__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Piece */ "./src/js/board/Piece.js");
+/* harmony import */ var _Block__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Block */ "./src/js/board/Block.js");
+/* harmony import */ var _css_board_board_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../css/board/board.css */ "./src/css/board/board.css");
+/* harmony import */ var _css_board_board_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_css_board_board_css__WEBPACK_IMPORTED_MODULE_2__);
+/* eslint-disable no-undef */
+
+
+
+function Board() {
+  this.el = document.createElement('ul');
+  this.blocks = [];
+  this.mPiece = new _Piece__WEBPACK_IMPORTED_MODULE_0__["default"]();
+
+  for (let i = 0; i < 100; i += 1) {
+    this.blocks.push(new _Block__WEBPACK_IMPORTED_MODULE_1__["default"](i));
+  } // const a = new Block();
+  // console.log(a);
+
+
+  this.el.onmouseover = e => {
+    console.log(e.target.sayName());
+  };
+}
+
+Board.prototype.draw = function draw() {
+  this.blocks.forEach(b => {
+    this.el.appendChild(b);
+  });
+};
+
+/***/ }),
+
+/***/ "./src/js/board/Piece.js":
+/*!*******************************!*\
+  !*** ./src/js/board/Piece.js ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (function () {
+  this.coor = [4, 5, 6];
+});
 
 /***/ })
 
