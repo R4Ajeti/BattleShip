@@ -30,10 +30,16 @@ export default function Board() {
     this.cPiece.chageAxis();
   };
 
-  this.el.onclick = () => {
+  this.el.onclick = (e) => {
     if (this.cPiece) {
       this.cPiece.setPosition();
       this.cPiece = this.pieces.find((pc) => pc.status === 0);
+    } else if (e.target.owner) {
+      const pc = e.target.owner;
+      pc.reset();
+      pc.status = 0;
+      pc.draw(e.target);
+      this.cPiece = pc;
     }
   };
 

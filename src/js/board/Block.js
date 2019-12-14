@@ -11,20 +11,20 @@ class Block extends HTMLLIElement {
     this.owner = null;
   }
 
-  // sayName() {
-  //   // console.log(this.getSibblings());
-  // }
-
   clean() {
     if (!this.owner) {
       this.style.backgroundColor = '#790707';
     } else {
       this.style.backgroundColor = this.owner.color;
+      this.textContent = this.blkId;
     }
   }
 
   paint(color) {
     this.style.backgroundColor = color;
+    if (this.owner) {
+      this.textContent = 'X';
+    }
   }
 }
 

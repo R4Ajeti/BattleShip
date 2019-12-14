@@ -3,7 +3,6 @@ class Piece {
   constructor(len, blocks, color) {
     this.len = len;
     this.axis = 'y';
-    this.coor = [];
     this.status = 0;
     this.sibs = null;
     this.blkId = null;
@@ -25,10 +24,12 @@ class Piece {
       this.status = 1;
 
       this.addBorders();
+
+      this.paint(this.color);
+
       this.sibs.forEach((blk) => {
         this.blocks[blk].owner = this;
       });
-      this.paint(this.color);
     }
   }
 
@@ -77,6 +78,14 @@ class Piece {
         this.blocks[blk].clean();
       });
     }
+  }
+
+  reset() {
+    this.sibs.forEach((blk) => {
+      this.blocks[blk].owner = null;
+      this.blocks[blk].style.border = 0;
+      this.blocks[blk].clean();
+    });
   }
 
   getSiblings(axis = 'x', dist = 2) {
