@@ -3,8 +3,6 @@
 /* eslint-disable import/no-unresolved */
 /* eslint arrow-parens: ["error", "as-needed"] */
 
-import axios from 'axios';
-
 import './css/style.css';
 import Board from './js/board/Board';
 
