@@ -6,43 +6,43 @@ import '../../css/board/board.css';
 export default function Board() {
   this.el = document.createElement('ul');
   this.blocks = [];
-  this.mPiece = new Piece();
+  this.pieces = [
+    new Piece(3, this.blocks, 'green'),
+    new Piece(2, this.blocks, 'blue'),
+    new Piece(2, this.blocks, 'blue'),
+    new Piece(1, this.blocks, 'gray'),
+    new Piece(1, this.blocks, 'gray'),
+    new Piece(1, this.blocks, 'gray'),
+    new Piece(0, this.blocks, '#efda25'),
+    new Piece(0, this.blocks, '#efda25'),
+    new Piece(0, this.blocks, '#efda25'),
+    new Piece(0, this.blocks, '#efda25'),
+  ];
+
+  [this.cPiece] = this.pieces;
 
   for (let i = 0; i < 100; i += 1) {
     this.blocks.push(new Block(i));
   }
 
-  // const a = new Block();
-  // console.log(a);
 
-  let sibs;
-  let axis = 'x';
+  this.el.onwheel = () => {
+    this.cPiece.chageAxis();
+  };
 
-  this.el.onclick = (e) => {
-    sibs.forEach((blk) => {
-      this.blocks[blk].clean();
-    });
-
-    axis = axis === 'x' ? 'y' : 'x';
-    sibs = e.target.getSiblings(axis, 3);
-
-    sibs.forEach((blk) => {
-      this.blocks[blk].paint();
-    });
+  this.el.onclick = () => {
+    if (this.cPiece) {
+      this.cPiece.setPosition();
+      this.cPiece = this.pieces.find((pc) => pc.status === 0);
+    }
   };
 
   this.el.onmouseover = (e) => {
-    sibs = e.target.getSiblings(axis, 3);
-
-    sibs.forEach((blk) => {
-      this.blocks[blk].paint();
-    });
+    if (this.cPiece) { this.cPiece.draw(e.target); }
   };
 
-  this.el.onmouseout = (e) => {
-    sibs.forEach((blk) => {
-      this.blocks[blk].clean();
-    });
+  this.el.onmouseout = () => {
+    if (this.cPiece) { this.cPiece.clean(); }
   };
 }
 

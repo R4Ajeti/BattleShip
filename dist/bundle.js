@@ -2615,53 +2615,23 @@ class Block extends HTMLLIElement {
     super();
     this.appendChild(document.createTextNode(blkId));
     this.blkId = blkId;
-  }
+    this.blkOwnr = null;
+    this.owner = null;
+  } // sayName() {
+  //   // console.log(this.getSibblings());
+  // }
 
-  sayName() {
-    console.log(this.getSibblings());
-  }
 
   clean() {
-    this.style.backgroundColor = '#790707';
+    if (!this.owner) {
+      this.style.backgroundColor = '#790707';
+    }
   }
 
-  paint() {
-    this.style.backgroundColor = 'green';
-  }
-
-  getSiblings(axis = 'x', dist = 2) {
-    const sibs = [];
-    let min;
-    let max;
-    let rmin;
-    let inc;
-
-    if (axis === 'x') {
-      const fl = Math.floor(this.blkId / 10);
-      min = fl * 10;
-      max = fl * 10 + 9;
-      rmin = Math.abs(this.blkId + dist);
-      inc = 1;
+  paint(color) {
+    if (!this.owner) {
+      this.style.backgroundColor = color;
     }
-
-    if (axis === 'y') {
-      const dv = this.blkId / 10;
-      min = 10 * (dv - Math.floor(dv)).toFixed(2);
-      max = min + 90;
-      rmin = Math.abs(this.blkId + dist * 10);
-      inc = 10;
-    }
-
-    let i = dist < 0 ? rmin : this.blkId;
-    i = i >= min ? i : min;
-    let f = dist < 0 ? this.blkId : rmin;
-    f = f <= max ? f : max;
-
-    for (i; i <= f; i += inc) {
-      sibs.push(i);
-    }
-
-    return sibs;
   }
 
 }
@@ -2694,39 +2664,34 @@ __webpack_require__.r(__webpack_exports__);
 function Board() {
   this.el = document.createElement('ul');
   this.blocks = [];
-  this.mPiece = new _Piece__WEBPACK_IMPORTED_MODULE_0__["default"]();
+  this.pieces = [new _Piece__WEBPACK_IMPORTED_MODULE_0__["default"](3, this.blocks, 'green'), new _Piece__WEBPACK_IMPORTED_MODULE_0__["default"](2, this.blocks, 'blue'), new _Piece__WEBPACK_IMPORTED_MODULE_0__["default"](2, this.blocks, 'blue'), new _Piece__WEBPACK_IMPORTED_MODULE_0__["default"](1, this.blocks, 'gray'), new _Piece__WEBPACK_IMPORTED_MODULE_0__["default"](1, this.blocks, 'gray'), new _Piece__WEBPACK_IMPORTED_MODULE_0__["default"](1, this.blocks, 'gray'), new _Piece__WEBPACK_IMPORTED_MODULE_0__["default"](0, this.blocks, '#efda25'), new _Piece__WEBPACK_IMPORTED_MODULE_0__["default"](0, this.blocks, '#efda25'), new _Piece__WEBPACK_IMPORTED_MODULE_0__["default"](0, this.blocks, '#efda25'), new _Piece__WEBPACK_IMPORTED_MODULE_0__["default"](0, this.blocks, '#efda25')];
+  [this.cPiece] = this.pieces;
 
   for (let i = 0; i < 100; i += 1) {
     this.blocks.push(new _Block__WEBPACK_IMPORTED_MODULE_1__["default"](i));
-  } // const a = new Block();
-  // console.log(a);
+  }
 
+  this.el.onwheel = () => {
+    this.cPiece.chageAxis();
+  };
 
-  let sibs;
-  let axis = 'x';
-
-  this.el.onclick = e => {
-    sibs.forEach(blk => {
-      this.blocks[blk].clean();
-    });
-    axis = axis === 'x' ? 'y' : 'x';
-    sibs = e.target.getSiblings(axis, 3);
-    sibs.forEach(blk => {
-      this.blocks[blk].paint();
-    });
+  this.el.onclick = () => {
+    if (this.cPiece) {
+      this.cPiece.setPosition();
+      this.cPiece = this.pieces.find(pc => pc.status === 0);
+    }
   };
 
   this.el.onmouseover = e => {
-    sibs = e.target.getSiblings(axis, 3);
-    sibs.forEach(blk => {
-      this.blocks[blk].paint();
-    });
+    if (this.cPiece) {
+      this.cPiece.draw(e.target);
+    }
   };
 
-  this.el.onmouseout = e => {
-    sibs.forEach(blk => {
-      this.blocks[blk].clean();
-    });
+  this.el.onmouseout = () => {
+    if (this.cPiece) {
+      this.cPiece.clean();
+    }
   };
 }
 
@@ -2747,9 +2712,95 @@ Board.prototype.draw = function draw() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = (function () {
-  this.coor = [4, 5, 6];
-});
+class Piece {
+  constructor(len, blocks, color) {
+    this.len = len;
+    this.axis = 'y';
+    this.coor = [];
+    this.status = 0;
+    this.sibs = null;
+    this.blkId = null;
+    this.blocks = blocks;
+    this.color = color;
+  }
+
+  chageAxis() {
+    if (this.status === 0) {
+      this.axis = this.axis === 'x' ? 'y' : 'x';
+      this.clean();
+      this.sibs = this.getSiblings(this.axis, this.len);
+      this.paint(this.color);
+    }
+  }
+
+  setPosition() {
+    this.status = 1;
+    this.sibs.forEach(blk => {
+      this.blocks[blk].owner = this;
+    });
+    this.paint(this.color);
+  }
+
+  draw(target) {
+    if (this.status === 0) {
+      this.blkId = target.blkId;
+      this.sibs = this.getSiblings(this.axis, this.len);
+      this.paint(this.color);
+    }
+  }
+
+  paint() {
+    this.sibs.forEach(blk => {
+      this.blocks[blk].paint(this.color);
+    });
+  }
+
+  clean() {
+    if (this.sibs && this.status === 0) {
+      this.sibs.forEach(blk => {
+        this.blocks[blk].clean();
+      });
+    }
+  }
+
+  getSiblings(axis = 'x', dist = 2) {
+    const sibs = [];
+    let min;
+    let max;
+    let rmin;
+    let inc;
+
+    if (axis === 'x') {
+      const fl = Math.floor(this.blkId / 10);
+      min = fl * 10;
+      max = fl * 10 + 9;
+      rmin = this.blkId + dist;
+      inc = 1;
+    }
+
+    if (axis === 'y') {
+      const dv = this.blkId / 10;
+      min = 10 * (dv - Math.floor(dv)).toFixed(2);
+      max = min + 90;
+      rmin = this.blkId + dist * 10;
+      inc = 10;
+    }
+
+    let i = dist < 0 ? rmin : this.blkId;
+    i = i >= min ? i : min;
+    let f = dist < 0 ? this.blkId : rmin;
+    f = f <= max ? f : max;
+
+    for (i; i <= f; i += inc) {
+      sibs.push(i);
+    }
+
+    return sibs;
+  }
+
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Piece);
 
 /***/ })
 
