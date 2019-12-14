@@ -22,6 +22,16 @@ class Piece {
 
   setPosition() {
     this.status = 1;
+
+    if (this.axis === 'y') {
+      this.sibs.forEach((blk) => {
+        this.blocks[blk].style.borderRight = '10px solid gray';
+        this.blocks[blk].style.borderLeft = '10px solid gray';
+      });
+
+      this.blocks[this.sibs[0]].style.borderTop = '10px solid black';
+      this.blocks[this.sibs[this.sibs.length - 1]].style.borderBottom = '10px solid black';
+    }
     this.sibs.forEach((blk) => {
       this.blocks[blk].owner = this;
     });

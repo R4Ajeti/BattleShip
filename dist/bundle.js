@@ -1860,7 +1860,7 @@ module.exports = function isBuffer (obj) {
 
 exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
 // Module
-exports.push([module.i, "li {\n  color: white;\n  box-sizing: border-box;\n  background-color: #790707;\n  border: 1px solid;\n  padding: 5px;\n  width: 60px;\n  height: 60px;\n}", ""]);
+exports.push([module.i, "li {\n  color: white;\n  box-sizing: border-box;\n  background-color: #790707;\n  outline: 1px solid;\n  padding: 5px;\n  width: 60px;\n  height: 60px;\n}", ""]);
 
 
 /***/ }),
@@ -2735,6 +2735,16 @@ class Piece {
 
   setPosition() {
     this.status = 1;
+
+    if (this.axis === 'y') {
+      this.sibs.forEach(blk => {
+        this.blocks[blk].style.borderRight = '10px solid gray';
+        this.blocks[blk].style.borderLeft = '10px solid gray';
+      });
+      this.blocks[this.sibs[0]].style.borderTop = '10px solid black';
+      this.blocks[this.sibs[this.sibs.length - 1]].style.borderBottom = '10px solid black';
+    }
+
     this.sibs.forEach(blk => {
       this.blocks[blk].owner = this;
     });
