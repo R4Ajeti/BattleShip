@@ -18,13 +18,13 @@ class Block extends HTMLLIElement {
   clean() {
     if (!this.owner) {
       this.style.backgroundColor = '#790707';
+    } else {
+      this.style.backgroundColor = this.owner.color;
     }
   }
 
   paint(color) {
-    if (!this.owner) {
-      this.style.backgroundColor = color;
-    }
+    this.style.backgroundColor = color;
   }
 }
 

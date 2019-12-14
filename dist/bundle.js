@@ -1860,7 +1860,7 @@ module.exports = function isBuffer (obj) {
 
 exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
 // Module
-exports.push([module.i, "li {\n  color: white;\n  box-sizing: border-box;\n  background-color: #790707;\n  outline: 1px solid;\n  padding: 5px;\n  width: 60px;\n  height: 60px;\n}", ""]);
+exports.push([module.i, "li {\n  color: white;\n  box-sizing: border-box;\n  background-color: #790707;\n  text-align: center;\n  outline: 1px solid;\n  padding: 5px;\n  width: 60px;\n  height: 60px;\n}", ""]);
 
 
 /***/ }),
@@ -2625,13 +2625,13 @@ class Block extends HTMLLIElement {
   clean() {
     if (!this.owner) {
       this.style.backgroundColor = '#790707';
+    } else {
+      this.style.backgroundColor = this.owner.color;
     }
   }
 
   paint(color) {
-    if (!this.owner) {
-      this.style.backgroundColor = color;
-    }
+    this.style.backgroundColor = color;
   }
 
 }
@@ -2734,21 +2734,37 @@ class Piece {
   }
 
   setPosition() {
-    this.status = 1;
+    if (this.sibs.every(blk => this.blocks[blk].owner === null)) {
+      this.status = 1;
+      this.addBorders();
+      this.sibs.forEach(blk => {
+        this.blocks[blk].owner = this;
+      });
+      this.paint(this.color);
+    }
+  }
+
+  addBorders() {
+    const borderColor = '#525252';
+    const botderMColor = 'black';
 
     if (this.axis === 'y') {
       this.sibs.forEach(blk => {
-        this.blocks[blk].style.borderRight = '10px solid gray';
-        this.blocks[blk].style.borderLeft = '10px solid gray';
+        this.blocks[blk].style.borderRight = `10px solid ${borderColor}`;
+        this.blocks[blk].style.borderLeft = `10px solid ${borderColor}`;
       });
-      this.blocks[this.sibs[0]].style.borderTop = '10px solid black';
-      this.blocks[this.sibs[this.sibs.length - 1]].style.borderBottom = '10px solid black';
+      this.blocks[this.sibs[0]].style.borderTop = `10px solid ${botderMColor}`;
+      this.blocks[this.sibs[this.sibs.length - 1]].style.borderBottom = `10px solid ${botderMColor}`;
     }
 
-    this.sibs.forEach(blk => {
-      this.blocks[blk].owner = this;
-    });
-    this.paint(this.color);
+    if (this.axis === 'x') {
+      this.sibs.forEach(blk => {
+        this.blocks[blk].style.borderTop = `10px solid ${borderColor}`;
+        this.blocks[blk].style.borderBottom = `10px solid ${borderColor}`;
+      });
+      this.blocks[this.sibs[0]].style.borderLeft = `10px solid ${botderMColor}`;
+      this.blocks[this.sibs[this.sibs.length - 1]].style.borderRight = `10px solid ${botderMColor}`;
+    }
   }
 
   draw(target) {
