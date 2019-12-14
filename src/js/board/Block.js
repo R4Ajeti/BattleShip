@@ -20,6 +20,10 @@ class Block extends HTMLLIElement {
     }
   }
 
+  select() {
+    this.style.backgroundColor = '#9c1616';
+  }
+
   paint(color) {
     this.style.backgroundColor = color;
     if (this.owner) {

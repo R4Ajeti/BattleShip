@@ -95,7 +95,7 @@
 
 exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
 // Module
-exports.push([module.i, "li {\n  color: white;\n  box-sizing: border-box;\n  background-color: #790707;\n  text-align: center;\n  outline: 1px solid rgba(0,0, 0, 0.3);\n  padding: 5px;\n  width: 60px;\n  line-height: 45px;\n  height: 60px;\n}", ""]);
+exports.push([module.i, "li {\n  display: flex;\n  color: white;\n  box-sizing: border-box;\n  background-color: #790707;\n  outline: 1px solid rgba(255, 255, 255, 0.3);\n  padding: 5px;\n  width: 40px;\n  align-items: center;\n  justify-content: center;\n  height: 40px;\n}", ""]);
 
 
 /***/ }),
@@ -109,7 +109,7 @@ exports.push([module.i, "li {\n  color: white;\n  box-sizing: border-box;\n  bac
 
 exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
 // Module
-exports.push([module.i, "ul{\n  display: flex;\n  width: 600px;\n  flex-wrap: wrap;\n  list-style: none;\n  padding: 0;\n}", ""]);
+exports.push([module.i, "ul{\n  display: flex;\n  width: 400px;\n  flex-wrap: wrap;\n  list-style: none;\n  padding: 0;\n  user-select: none;\n}", ""]);
 
 
 /***/ }),
@@ -123,7 +123,7 @@ exports.push([module.i, "ul{\n  display: flex;\n  width: 600px;\n  flex-wrap: wr
 
 exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
 // Module
-exports.push([module.i, "body{\n  box-sizing: border-box;\n  background-color: rgb(58, 57, 57);\n}", ""]);
+exports.push([module.i, "body{\n  box-sizing: border-box;\n  background-color: rgb(58, 57, 57);\n}\n\ndiv.content {\n  display: inline-flex;\n}\n\nul:nth-child(1){\n  margin: 20px;\n}", ""]);
 
 
 /***/ }),
@@ -626,8 +626,11 @@ __webpack_require__.r(__webpack_exports__);
 
 const content = document.querySelector('div.content');
 const mBoard = new _js_board_Board__WEBPACK_IMPORTED_MODULE_1__["default"]();
+const compBoard = new _js_board_Board__WEBPACK_IMPORTED_MODULE_1__["default"]();
 mBoard.draw();
+compBoard.draw();
 content.appendChild(mBoard.el);
+content.appendChild(compBoard.el);
 
 /***/ }),
 
@@ -663,6 +666,10 @@ class Block extends HTMLLIElement {
       this.style.backgroundColor = this.owner.color;
       this.textContent = this.blkId;
     }
+  }
+
+  select() {
+    this.style.backgroundColor = '#9c1616';
   }
 
   paint(color) {
@@ -731,11 +738,19 @@ function Board() {
     if (this.cPiece) {
       this.cPiece.draw(e.target);
     }
+
+    if (e.target.owner && !this.cPiece) {
+      e.target.owner.select();
+    }
   };
 
-  this.el.onmouseout = () => {
+  this.el.onmouseout = e => {
     if (this.cPiece) {
       this.cPiece.clean();
+    }
+
+    if (e.target.owner) {
+      e.target.owner.clean();
     }
   };
 }
@@ -778,7 +793,7 @@ class Piece {
   }
 
   setPosition() {
-    if (this.sibs.every(blk => this.blocks[blk].owner === null)) {
+    if (this.sibs.every(blk => !this.blocks[blk].owner) && this.sibs.length === this.len + 1) {
       this.status = 1;
       this.addBorders();
       this.paint(this.color);
@@ -789,25 +804,25 @@ class Piece {
   }
 
   addBorders() {
-    const borderColor = '#525252';
+    const borderColor = '#3b3b3b';
     const botderMColor = 'black';
 
     if (this.axis === 'y') {
       this.sibs.forEach(blk => {
-        this.blocks[blk].style.borderRight = `10px solid ${borderColor}`;
-        this.blocks[blk].style.borderLeft = `10px solid ${borderColor}`;
+        this.blocks[blk].style.borderRight = `8px solid ${borderColor}`;
+        this.blocks[blk].style.borderLeft = `8px solid ${borderColor}`;
       });
-      this.blocks[this.sibs[0]].style.borderTop = `10px solid ${botderMColor}`;
-      this.blocks[this.sibs[this.sibs.length - 1]].style.borderBottom = `10px solid ${botderMColor}`;
+      this.blocks[this.sibs[0]].style.borderTop = `8px solid ${botderMColor}`;
+      this.blocks[this.sibs[this.sibs.length - 1]].style.borderBottom = `8px solid ${botderMColor}`;
     }
 
     if (this.axis === 'x') {
       this.sibs.forEach(blk => {
-        this.blocks[blk].style.borderTop = `10px solid ${borderColor}`;
-        this.blocks[blk].style.borderBottom = `10px solid ${borderColor}`;
+        this.blocks[blk].style.borderTop = `8px solid ${borderColor}`;
+        this.blocks[blk].style.borderBottom = `8px solid ${borderColor}`;
       });
-      this.blocks[this.sibs[0]].style.borderLeft = `10px solid ${botderMColor}`;
-      this.blocks[this.sibs[this.sibs.length - 1]].style.borderRight = `10px solid ${botderMColor}`;
+      this.blocks[this.sibs[0]].style.borderLeft = `8px solid ${botderMColor}`;
+      this.blocks[this.sibs[this.sibs.length - 1]].style.borderRight = `8px solid ${botderMColor}`;
     }
   }
 
@@ -826,11 +841,17 @@ class Piece {
   }
 
   clean() {
-    if (this.sibs && this.status === 0) {
+    if (this.sibs) {
       this.sibs.forEach(blk => {
         this.blocks[blk].clean();
       });
     }
+  }
+
+  select() {
+    this.sibs.forEach(blk => {
+      this.blocks[blk].select();
+    });
   }
 
   reset() {

@@ -20,7 +20,8 @@ class Piece {
   }
 
   setPosition() {
-    if (this.sibs.every((blk) => this.blocks[blk].owner === null)) {
+    if (this.sibs.every((blk) => !this.blocks[blk].owner)
+    && this.sibs.length === this.len + 1) {
       this.status = 1;
 
       this.addBorders();
@@ -34,27 +35,27 @@ class Piece {
   }
 
   addBorders() {
-    const borderColor = '#525252';
+    const borderColor = '#3b3b3b';
     const botderMColor = 'black';
 
     if (this.axis === 'y') {
       this.sibs.forEach((blk) => {
-        this.blocks[blk].style.borderRight = `10px solid ${borderColor}`;
-        this.blocks[blk].style.borderLeft = `10px solid ${borderColor}`;
+        this.blocks[blk].style.borderRight = `8px solid ${borderColor}`;
+        this.blocks[blk].style.borderLeft = `8px solid ${borderColor}`;
       });
 
-      this.blocks[this.sibs[0]].style.borderTop = `10px solid ${botderMColor}`;
-      this.blocks[this.sibs[this.sibs.length - 1]].style.borderBottom = `10px solid ${botderMColor}`;
+      this.blocks[this.sibs[0]].style.borderTop = `8px solid ${botderMColor}`;
+      this.blocks[this.sibs[this.sibs.length - 1]].style.borderBottom = `8px solid ${botderMColor}`;
     }
 
     if (this.axis === 'x') {
       this.sibs.forEach((blk) => {
-        this.blocks[blk].style.borderTop = `10px solid ${borderColor}`;
-        this.blocks[blk].style.borderBottom = `10px solid ${borderColor}`;
+        this.blocks[blk].style.borderTop = `8px solid ${borderColor}`;
+        this.blocks[blk].style.borderBottom = `8px solid ${borderColor}`;
       });
 
-      this.blocks[this.sibs[0]].style.borderLeft = `10px solid ${botderMColor}`;
-      this.blocks[this.sibs[this.sibs.length - 1]].style.borderRight = `10px solid ${botderMColor}`;
+      this.blocks[this.sibs[0]].style.borderLeft = `8px solid ${botderMColor}`;
+      this.blocks[this.sibs[this.sibs.length - 1]].style.borderRight = `8px solid ${botderMColor}`;
     }
   }
 
@@ -73,11 +74,17 @@ class Piece {
   }
 
   clean() {
-    if (this.sibs && this.status === 0) {
+    if (this.sibs) {
       this.sibs.forEach((blk) => {
         this.blocks[blk].clean();
       });
     }
+  }
+
+  select() {
+    this.sibs.forEach((blk) => {
+      this.blocks[blk].select();
+    });
   }
 
   reset() {

@@ -1,7 +1,8 @@
 ul{
   display: flex;
-  width: 600px;
+  width: 400px;
   flex-wrap: wrap;
   list-style: none;
   padding: 0;
+  user-select: none;
 }

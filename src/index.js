@@ -9,6 +9,12 @@ import Board from './js/board/Board';
 
 const content = document.querySelector('div.content');
 const mBoard = new Board();
+const compBoard = new Board();
+
+
 mBoard.draw();
+compBoard.draw();
+
 
 content.appendChild(mBoard.el);
+content.appendChild(compBoard.el);

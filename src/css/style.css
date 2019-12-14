@@ -2,3 +2,11 @@ body{
   box-sizing: border-box;
   background-color: rgb(58, 57, 57);
 }
+
+div.content {
+  display: inline-flex;
+}
+
+ul:nth-child(1){
+  margin: 20px;
+}

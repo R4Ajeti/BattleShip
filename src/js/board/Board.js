@@ -45,10 +45,16 @@ export default function Board() {
 
   this.el.onmouseover = (e) => {
     if (this.cPiece) { this.cPiece.draw(e.target); }
+    if (e.target.owner && !this.cPiece) {
+      e.target.owner.select();
+    }
   };
 
-  this.el.onmouseout = () => {
+  this.el.onmouseout = (e) => {
     if (this.cPiece) { this.cPiece.clean(); }
+    if (e.target.owner) {
+      e.target.owner.clean();
+    }
   };
 }
 
