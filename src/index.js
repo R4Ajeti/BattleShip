@@ -16,8 +16,8 @@ mBoard.draw();
 compBoard.draw();
 
 
-content.appendChild(mBoard.el);
-content.appendChild(compBoard.el);
+content.appendChild(mBoard);
+content.appendChild(compBoard);
 
 
 const btn = document.createElement('input');
