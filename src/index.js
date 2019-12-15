@@ -18,3 +18,10 @@ compBoard.draw();
 
 content.appendChild(mBoard.el);
 content.appendChild(compBoard.el);
+
+
+const btn = document.createElement('input');
+btn.setAttribute('type', 'button');
+btn.value = 'Test';
+btn.onclick = () => compBoard.autoMove();
+content.appendChild(btn);

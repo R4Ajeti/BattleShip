@@ -27,13 +27,16 @@ export default function Board() {
 
 
   this.el.onwheel = () => {
-    this.cPiece.chageAxis();
+    if (this.cPiece) {
+      this.cPiece.chageAxis();
+    }
   };
 
   this.el.onclick = (e) => {
     if (this.cPiece) {
       this.cPiece.setPosition();
       this.cPiece = this.pieces.find((pc) => pc.status === 0);
+      if (this.cPiece) { this.cPiece.draw(e.target); }
     } else if (e.target.owner) {
       const pc = e.target.owner;
       pc.reset();
@@ -58,6 +61,21 @@ export default function Board() {
   };
 }
 
+Board.prototype.autoMove = function autoMove() {
+  const spc = this.pieces.find((pc) => pc.status === 0);
+  // const axis = Math.floor(Math.random() * 2 + 0) === 0 ? 'x' : 'y';
+  const axis = 'y';
+  if (axis === 'y') {
+    let pos;
+    for (let i = 0; i < 10; i += 1) {
+      pos = [];
+      for (let j = i; j < (90 + i) - (spc.len * 10); j += 10) {
+        pos.push(j);
+      }
+      console.log(pos);
+    }
+  }
+};
 
 Board.prototype.draw = function draw() {
   this.blocks.forEach((b) => {

@@ -123,7 +123,7 @@ exports.push([module.i, "ul{\n  display: flex;\n  width: 400px;\n  flex-wrap: wr
 
 exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(false);
 // Module
-exports.push([module.i, "body{\n  box-sizing: border-box;\n  background-color: rgb(58, 57, 57);\n}\n\ndiv.content {\n  display: inline-flex;\n}\n\nul:nth-child(1){\n  margin: 20px;\n}", ""]);
+exports.push([module.i, "body{\n  box-sizing: border-box;\n  background-color: rgb(58, 57, 57);\n}\n\ndiv.content {\n  display: inline-flex;\n}\n\nul{\n  margin: 20px 20px 0 10px ; \n}", ""]);
 
 
 /***/ }),
@@ -631,6 +631,13 @@ mBoard.draw();
 compBoard.draw();
 content.appendChild(mBoard.el);
 content.appendChild(compBoard.el);
+const btn = document.createElement('input');
+btn.setAttribute('type', 'button');
+btn.value = 'Test';
+
+btn.onclick = () => compBoard.autoMove();
+
+content.appendChild(btn);
 
 /***/ }),
 
@@ -718,13 +725,19 @@ function Board() {
   }
 
   this.el.onwheel = () => {
-    this.cPiece.chageAxis();
+    if (this.cPiece) {
+      this.cPiece.chageAxis();
+    }
   };
 
   this.el.onclick = e => {
     if (this.cPiece) {
       this.cPiece.setPosition();
       this.cPiece = this.pieces.find(pc => pc.status === 0);
+
+      if (this.cPiece) {
+        this.cPiece.draw(e.target);
+      }
     } else if (e.target.owner) {
       const pc = e.target.owner;
       pc.reset();
@@ -754,6 +767,26 @@ function Board() {
     }
   };
 }
+
+Board.prototype.autoMove = function autoMove() {
+  const spc = this.pieces.find(pc => pc.status === 0); // const axis = Math.floor(Math.random() * 2 + 0) === 0 ? 'x' : 'y';
+
+  const axis = 'y';
+
+  if (axis === 'y') {
+    let pos;
+
+    for (let i = 0; i < 10; i += 1) {
+      pos = [];
+
+      for (let j = i; j < 90 + i - spc.len * 10; j += 10) {
+        pos.push(j);
+      }
+
+      console.log(pos);
+    }
+  }
+};
 
 Board.prototype.draw = function draw() {
   this.blocks.forEach(b => {
