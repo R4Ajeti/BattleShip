@@ -22,6 +22,20 @@ class Block extends HTMLLIElement {
     }
   }
 
+
+  hide() {
+    if (this.owner) {
+      this.style.backgroundColor = this.defColor;
+      this.style.border = 0;
+    }
+  }
+
+  show() {
+    if (this.owner) {
+      this.style.backgroundColor = this.owner.color;
+    }
+  }
+
   select() {
     this.style.backgroundColor = '#9c1616';
   }

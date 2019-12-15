@@ -19,6 +19,7 @@ class Board extends HTMLUListElement {
       new Piece(0, this.blocks, '#efda25'),
       new Piece(0, this.blocks, '#efda25'),
     ];
+    this.hidden = false;
 
     [this.cPiece] = this.pieces;
 
@@ -38,7 +39,7 @@ class Board extends HTMLUListElement {
         this.cPiece.setPosition();
         this.cPiece = this.pieces.find((pc) => pc.status === 0);
         if (this.cPiece) { this.cPiece.draw(e.target); }
-      } else if (e.target.owner) {
+      } else if (e.target.owner && !this.hidden) {
         const pc = e.target.owner;
         pc.reset();
         pc.status = 0;
@@ -50,14 +51,14 @@ class Board extends HTMLUListElement {
 
     this.onmouseover = (e) => {
       if (this.cPiece) { this.cPiece.draw(e.target); }
-      if (e.target.owner && !this.cPiece) {
+      if (e.target.owner && !this.cPiece && !this.hidden) {
         e.target.owner.select();
       }
     };
 
     this.onmouseout = (e) => {
       if (this.cPiece) { this.cPiece.clean(); }
-      if (e.target.owner) {
+      if (e.target.owner && !this.hidden) {
         e.target.owner.clean();
       }
     };
@@ -66,11 +67,13 @@ class Board extends HTMLUListElement {
 
   autoMove() {
     this.pieces.forEach((spc) => {
-      const axis = Math.floor(Math.random() * 2 + 0) === 0 ? 'x' : 'y';
-      spc.setAxis(axis);
-      const pos = this.getPosibleMoves(spc);
-      spc.draw(this.blocks[pos[Math.floor(Math.random() * pos.length)]]);
-      spc.setPosition();
+      if (spc.status === 0) {
+        const axis = Math.floor(Math.random() * 2 + 0) === 0 ? 'x' : 'y';
+        spc.setAxis(axis);
+        const pos = this.getPosibleMoves(spc);
+        spc.draw(this.blocks[pos[Math.floor(Math.random() * pos.length)]]);
+        spc.setPosition();
+      }
     });
     this.cPiece = null;
   }
@@ -162,6 +165,22 @@ class Board extends HTMLUListElement {
     this.blocks.forEach((b) => {
       this.appendChild(b);
     });
+  }
+
+  hide() {
+    this.pieces.forEach((pc) => {
+      pc.hide();
+    });
+    this.hidden = true;
+  }
+
+
+  show() {
+    this.pieces.forEach((pc) => {
+      pc.show();
+      pc.addBorders();
+    });
+    this.hidden = false;
   }
 }
 

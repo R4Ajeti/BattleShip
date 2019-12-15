@@ -99,6 +99,22 @@ class Piece {
     });
   }
 
+  hide() {
+    if (this.sibs) {
+      this.sibs.forEach((blk) => {
+        this.blocks[blk].hide();
+      });
+    }
+  }
+
+  show() {
+    if (this.sibs) {
+      this.sibs.forEach((blk) => {
+        this.blocks[blk].show();
+      });
+    }
+  }
+
   getSiblings(axis = 'x', dist = 2) {
     const sibs = [];
     let min;
