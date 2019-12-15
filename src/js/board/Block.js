@@ -5,7 +5,9 @@ import '../../css/board/block.css';
 class Block extends HTMLLIElement {
   constructor(blkId) {
     super();
+    this.defColor = '#3c82cd';
     this.appendChild(document.createTextNode(blkId));
+    this.style.backgroundColor = this.defColor;
     this.blkId = blkId;
     this.blkOwnr = null;
     this.owner = null;
@@ -13,7 +15,7 @@ class Block extends HTMLLIElement {
 
   clean() {
     if (!this.owner) {
-      this.style.backgroundColor = '#790707';
+      this.style.backgroundColor = this.defColor;
     } else {
       this.style.backgroundColor = this.owner.color;
       this.textContent = this.blkId;

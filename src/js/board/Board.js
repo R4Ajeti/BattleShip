@@ -10,9 +10,9 @@ export default function Board() {
     new Piece(3, this.blocks, 'green'),
     new Piece(2, this.blocks, 'blue'),
     new Piece(2, this.blocks, 'blue'),
-    new Piece(1, this.blocks, 'gray'),
-    new Piece(1, this.blocks, 'gray'),
-    new Piece(1, this.blocks, 'gray'),
+    new Piece(1, this.blocks, '#901388'),
+    new Piece(1, this.blocks, '#901388'),
+    new Piece(1, this.blocks, '#901388'),
     new Piece(0, this.blocks, '#efda25'),
     new Piece(0, this.blocks, '#efda25'),
     new Piece(0, this.blocks, '#efda25'),
@@ -32,7 +32,7 @@ export default function Board() {
     }
   };
 
-  this.el.onclick = (e) => {
+  this.el.onmouseup = (e) => {
     if (this.cPiece) {
       this.cPiece.setPosition();
       this.cPiece = this.pieces.find((pc) => pc.status === 0);
@@ -45,6 +45,7 @@ export default function Board() {
       this.cPiece = pc;
     }
   };
+
 
   this.el.onmouseover = (e) => {
     if (this.cPiece) { this.cPiece.draw(e.target); }
@@ -67,12 +68,18 @@ Board.prototype.autoMove = function autoMove() {
   const axis = 'y';
   if (axis === 'y') {
     let pos;
+    let chnk;
     for (let i = 0; i < 10; i += 1) {
       pos = [];
+      chnk = [];
       for (let j = i; j < (90 + i) - (spc.len * 10); j += 10) {
         pos.push(j);
+        if (!this.blocks[j].owner) {
+          chnk.push(j);
+        }
       }
       console.log(pos);
+      console.log(chnk);
     }
   }
 };
