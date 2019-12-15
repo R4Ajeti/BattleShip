@@ -19,6 +19,10 @@ class Piece {
     }
   }
 
+  setAxis(axis) {
+    this.axis = axis;
+  }
+
   setPosition() {
     if (this.sibs.every((blk) => !this.blocks[blk].owner)
     && this.sibs.length === this.len + 1) {

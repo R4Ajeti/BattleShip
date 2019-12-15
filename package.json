@@ -6,7 +6,8 @@
   "scripts": {
     "test": "webpack-dev-server",
     "start": "npx webpack",
-    "build": "webpack --config webpack.prod.js"
+    "build": "webpack --config webpack.prod.js",
+    "debug": "node --inspect ./node_modules/webpack/bin/webpack.js"
   },
   "repository": {
     "type": "git",

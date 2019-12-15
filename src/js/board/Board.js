@@ -63,25 +63,96 @@ export default function Board() {
 }
 
 Board.prototype.autoMove = function autoMove() {
-  const spc = this.pieces.find((pc) => pc.status === 0);
-  // const axis = Math.floor(Math.random() * 2 + 0) === 0 ? 'x' : 'y';
-  const axis = 'y';
+  this.pieces.forEach((spc) => {
+    const axis = Math.floor(Math.random() * 2 + 0) === 0 ? 'x' : 'y';
+    spc.setAxis(axis);
+    const pos = this.getPosibleMoves(spc);
+    spc.draw(this.blocks[pos[Math.floor(Math.random() * pos.length)]]);
+    spc.setPosition();
+  });
+};
+
+Board.prototype.getPosibleMoves = function getPosibleMoves(spc) {
+  let posb = [];
+  const { axis } = spc;
+
   if (axis === 'y') {
-    let pos;
-    let chnk;
+    let avlb;
     for (let i = 0; i < 10; i += 1) {
-      pos = [];
-      chnk = [];
-      for (let j = i; j < (90 + i) - (spc.len * 10); j += 10) {
-        pos.push(j);
+      // get availables
+      avlb = [];
+      for (let j = i; j < (91 + i); j += 10) {
         if (!this.blocks[j].owner) {
-          chnk.push(j);
+          avlb.push(j);
         }
       }
-      console.log(pos);
-      console.log(chnk);
+
+      // get chunks
+      const chnks = [];
+      for (let k = 0; k < avlb.length; k += 1) {
+        const chnk = [];
+        let last = null;
+        let j = k - 1;
+        do {
+          j += 1;
+          chnk.push(avlb[j]);
+          last = j;
+        } while (j < avlb.length - 1 && avlb[j + 1] - avlb[j] === 10);
+
+        if (last) {
+          k = last;
+        }
+
+        // get posibles
+        chnks.push(chnk);
+        if (chnk.length > spc.len) {
+          posb = posb.concat(chnk.slice(0, chnk.length - spc.len));
+        }
+      }
+    }
+
+    // console.log(posb);
+  }
+
+
+  if (axis === 'x') {
+    let avlb;
+    for (let i = 0; i < 91; i += 10) {
+      // get availables
+      avlb = [];
+      for (let j = i; j < (10 + i); j += 1) {
+        if (!this.blocks[j].owner) {
+          avlb.push(j);
+        }
+      }
+
+      // get chunks
+      const chnks = [];
+      for (let k = 0; k < avlb.length; k += 1) {
+        const chnk = [];
+        let last = null;
+        let j = k - 1;
+        do {
+          j += 1;
+          chnk.push(avlb[j]);
+          last = j;
+        } while (j < avlb.length - 1 && avlb[j + 1] - avlb[j] === 1);
+
+        if (last) {
+          k = last;
+        }
+
+        // get posibles
+        chnks.push(chnk);
+
+
+        if (chnk.length > spc.len) {
+          posb = posb.concat(chnk.slice(0, chnk.length - spc.len));
+        }
+      }
     }
   }
+  return posb;
 };
 
 Board.prototype.draw = function draw() {
