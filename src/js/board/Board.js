@@ -70,6 +70,7 @@ Board.prototype.autoMove = function autoMove() {
     spc.draw(this.blocks[pos[Math.floor(Math.random() * pos.length)]]);
     spc.setPosition();
   });
+  this.cPiece = null;
 };
 
 Board.prototype.getPosibleMoves = function getPosibleMoves(spc) {
