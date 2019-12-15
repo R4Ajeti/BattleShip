@@ -1,5 +1,5 @@
 
-class Piece {
+class Ship {
   constructor(len, blocks, color) {
     this.len = len;
     this.axis = 'y';
@@ -42,24 +42,26 @@ class Piece {
     const borderColor = '#3b3b3b';
     const botderMColor = 'black';
 
-    if (this.axis === 'y') {
-      this.sibs.forEach((blk) => {
-        this.blocks[blk].style.borderRight = `8px solid ${borderColor}`;
-        this.blocks[blk].style.borderLeft = `8px solid ${borderColor}`;
-      });
+    if (this.sibs && this.status === 1) {
+      if (this.axis === 'y') {
+        this.sibs.forEach((blk) => {
+          this.blocks[blk].style.borderRight = `8px solid ${borderColor}`;
+          this.blocks[blk].style.borderLeft = `8px solid ${borderColor}`;
+        });
 
-      this.blocks[this.sibs[0]].style.borderTop = `8px solid ${botderMColor}`;
-      this.blocks[this.sibs[this.sibs.length - 1]].style.borderBottom = `8px solid ${botderMColor}`;
-    }
+        this.blocks[this.sibs[0]].style.borderTop = `8px solid ${botderMColor}`;
+        this.blocks[this.sibs[this.sibs.length - 1]].style.borderBottom = `8px solid ${botderMColor}`;
+      }
 
-    if (this.axis === 'x') {
-      this.sibs.forEach((blk) => {
-        this.blocks[blk].style.borderTop = `8px solid ${borderColor}`;
-        this.blocks[blk].style.borderBottom = `8px solid ${borderColor}`;
-      });
+      if (this.axis === 'x') {
+        this.sibs.forEach((blk) => {
+          this.blocks[blk].style.borderTop = `8px solid ${borderColor}`;
+          this.blocks[blk].style.borderBottom = `8px solid ${borderColor}`;
+        });
 
-      this.blocks[this.sibs[0]].style.borderLeft = `8px solid ${botderMColor}`;
-      this.blocks[this.sibs[this.sibs.length - 1]].style.borderRight = `8px solid ${botderMColor}`;
+        this.blocks[this.sibs[0]].style.borderLeft = `8px solid ${botderMColor}`;
+        this.blocks[this.sibs[this.sibs.length - 1]].style.borderRight = `8px solid ${botderMColor}`;
+      }
     }
   }
 
@@ -152,4 +154,4 @@ class Piece {
 }
 
 
-export default Piece;
+export default Ship;

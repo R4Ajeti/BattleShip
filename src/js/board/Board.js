@@ -1,27 +1,29 @@
 /* eslint-disable no-undef */
-import Piece from './Piece';
+import Ship from './Ship';
 import Block from './Block';
 import '../../css/board/board.css';
+import Player from '../Player';
 
 class Board extends HTMLUListElement {
-  constructor() {
+  constructor(playerName) {
     super();
     this.blocks = [];
-    this.pieces = [
-      new Piece(3, this.blocks, 'green'),
-      new Piece(2, this.blocks, 'blue'),
-      new Piece(2, this.blocks, 'blue'),
-      new Piece(1, this.blocks, '#901388'),
-      new Piece(1, this.blocks, '#901388'),
-      new Piece(1, this.blocks, '#901388'),
-      new Piece(0, this.blocks, '#efda25'),
-      new Piece(0, this.blocks, '#efda25'),
-      new Piece(0, this.blocks, '#efda25'),
-      new Piece(0, this.blocks, '#efda25'),
+    this.Ships = [
+      new Ship(3, this.blocks, 'green'),
+      new Ship(2, this.blocks, 'blue'),
+      new Ship(2, this.blocks, 'blue'),
+      new Ship(1, this.blocks, '#901388'),
+      new Ship(1, this.blocks, '#901388'),
+      new Ship(1, this.blocks, '#901388'),
+      new Ship(0, this.blocks, '#efda25'),
+      new Ship(0, this.blocks, '#efda25'),
+      new Ship(0, this.blocks, '#efda25'),
+      new Ship(0, this.blocks, '#efda25'),
     ];
     this.hidden = false;
+    this.player = new Player(playerName);
 
-    [this.cPiece] = this.pieces;
+    [this.cShip] = this.Ships;
 
     for (let i = 0; i < 100; i += 1) {
       this.blocks.push(new Block(i));
@@ -29,35 +31,39 @@ class Board extends HTMLUListElement {
 
 
     this.onwheel = () => {
-      if (this.cPiece) {
-        this.cPiece.chageAxis();
+      if (this.cShip) {
+        this.cShip.chageAxis();
       }
     };
 
     this.onmouseup = (e) => {
-      if (this.cPiece) {
-        this.cPiece.setPosition();
-        this.cPiece = this.pieces.find((pc) => pc.status === 0);
-        if (this.cPiece) { this.cPiece.draw(e.target); }
+      if (this.cShip) {
+        this.cShip.setPosition();
+        this.cShip = this.Ships.find((pc) => pc.status === 0);
+        if (this.cShip) {
+          this.cShip.draw(e.target);
+        } else {
+          this.dispatchEvent(new Event('selection_finished'));
+        }
       } else if (e.target.owner && !this.hidden) {
         const pc = e.target.owner;
         pc.reset();
         pc.status = 0;
         pc.draw(e.target);
-        this.cPiece = pc;
+        this.cShip = pc;
       }
     };
 
 
     this.onmouseover = (e) => {
-      if (this.cPiece) { this.cPiece.draw(e.target); }
-      if (e.target.owner && !this.cPiece && !this.hidden) {
+      if (this.cShip) { this.cShip.draw(e.target); }
+      if (e.target.owner && !this.cShip && !this.hidden) {
         e.target.owner.select();
       }
     };
 
     this.onmouseout = (e) => {
-      if (this.cPiece) { this.cPiece.clean(); }
+      if (this.cShip) { this.cShip.clean(); }
       if (e.target.owner && !this.hidden) {
         e.target.owner.clean();
       }
@@ -66,7 +72,7 @@ class Board extends HTMLUListElement {
 
 
   autoMove() {
-    this.pieces.forEach((spc) => {
+    this.Ships.forEach((spc) => {
       if (spc.status === 0) {
         const axis = Math.floor(Math.random() * 2 + 0) === 0 ? 'x' : 'y';
         spc.setAxis(axis);
@@ -75,7 +81,7 @@ class Board extends HTMLUListElement {
         spc.setPosition();
       }
     });
-    this.cPiece = null;
+    this.cShip = null;
   }
 
   getPosibleMoves(spc) {
@@ -162,13 +168,18 @@ class Board extends HTMLUListElement {
   }
 
   draw() {
+    const pNameEl = document.createElement('div');
+    pNameEl.classList.add('playerName');
+    pNameEl.style.width = '100%';
+    pNameEl.textContent = this.player.name;
+    this.appendChild(pNameEl);
     this.blocks.forEach((b) => {
       this.appendChild(b);
     });
   }
 
   hide() {
-    this.pieces.forEach((pc) => {
+    this.Ships.forEach((pc) => {
       pc.hide();
     });
     this.hidden = true;
@@ -176,7 +187,7 @@ class Board extends HTMLUListElement {
 
 
   show() {
-    this.pieces.forEach((pc) => {
+    this.Ships.forEach((pc) => {
       pc.show();
       pc.addBorders();
     });

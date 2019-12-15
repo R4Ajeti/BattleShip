@@ -4,9 +4,6 @@ body{
 }
 
 div.content {
-  display: inline-flex;
-}
-
-ul{
-  margin: 20px 20px 0 10px ; 
+  width: min-content;
+  margin: 0 auto;
 }
