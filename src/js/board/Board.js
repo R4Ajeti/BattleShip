@@ -159,10 +159,10 @@ class Board extends HTMLUListElement {
         }
       }
 
-      // console.log(posb);
+      // console.log(posb); sdfsd
     }
 
-
+    // probando
     if (axis === 'x') {
       let avlb;
       for (let i = 0; i < 91; i += 10) {
