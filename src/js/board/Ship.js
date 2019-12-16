@@ -8,6 +8,13 @@ class Ship {
     this.blkId = null;
     this.blocks = blocks;
     this.color = color;
+    this.sunken = false;
+  }
+
+  reset() {
+    this.blocks.forEach((blk) => {
+      blk.reset();
+    });
   }
 
   chageAxis() {
@@ -35,6 +42,14 @@ class Ship {
       this.sibs.forEach((blk) => {
         this.blocks[blk].owner = this;
       });
+    }
+  }
+
+  isSunk() {
+    if (this.sibs.every((sib) => this.blocks[sib].hitFlag)) {
+      this.sunken = true;
+      this.show();
+      this.addBorders();
     }
   }
 
@@ -93,7 +108,7 @@ class Ship {
     });
   }
 
-  reset() {
+  selfReset() {
     this.sibs.forEach((blk) => {
       this.blocks[blk].owner = null;
       this.blocks[blk].style.border = 0;

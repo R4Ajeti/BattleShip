@@ -15,12 +15,13 @@ class Board extends HTMLUListElement {
       new Ship(1, this.blocks, '#901388'),
       new Ship(1, this.blocks, '#901388'),
       new Ship(1, this.blocks, '#901388'),
-      new Ship(0, this.blocks, '#efda25'),
-      new Ship(0, this.blocks, '#efda25'),
-      new Ship(0, this.blocks, '#efda25'),
-      new Ship(0, this.blocks, '#efda25'),
+      new Ship(0, this.blocks, '#ffcd1a'),
+      new Ship(0, this.blocks, '#ffcd1a'),
+      new Ship(0, this.blocks, '#ffcd1a'),
+      new Ship(0, this.blocks, '#ffcd1a'),
     ];
     this.hidden = false;
+    this.locked = false;
     this.player = new Player(playerName);
 
     [this.cShip] = this.Ships;
@@ -37,39 +38,62 @@ class Board extends HTMLUListElement {
     };
 
     this.onmouseup = (e) => {
-      if (this.cShip) {
-        this.cShip.setPosition();
-        this.cShip = this.Ships.find((pc) => pc.status === 0);
+      if (!this.locked) {
         if (this.cShip) {
-          this.cShip.draw(e.target);
-        } else {
-          this.dispatchEvent(new Event('selection_finished'));
+          this.cShip.setPosition();
+          this.cShip = this.Ships.find((pc) => pc.status === 0);
+          if (this.cShip) {
+            this.cShip.draw(e.target);
+          } else {
+            this.dispatchEvent(new Event('selection_finished'));
+          }
+        } else if (e.target.owner && !this.hidden) {
+          const pc = e.target.owner;
+          pc.selfReset();
+          pc.status = 0;
+          pc.draw(e.target);
+          this.cShip = pc;
+        } else if (this.hidden) {
+          e.target.hit();
+          this.dispatchEvent(new Event('move_done'));
         }
-      } else if (e.target.owner && !this.hidden) {
-        const pc = e.target.owner;
-        pc.reset();
-        pc.status = 0;
-        pc.draw(e.target);
-        this.cShip = pc;
       }
     };
 
-
     this.onmouseover = (e) => {
-      if (this.cShip) { this.cShip.draw(e.target); }
-      if (e.target.owner && !this.cShip && !this.hidden) {
-        e.target.owner.select();
+      if (!this.locked) {
+        if (this.cShip) {
+          this.cShip.draw(e.target);
+        } else if (e.target.owner && !this.hidden) {
+          e.target.owner.select();
+        } else if (this.hidden) {
+          e.target.select();
+        }
       }
     };
 
     this.onmouseout = (e) => {
-      if (this.cShip) { this.cShip.clean(); }
-      if (e.target.owner && !this.hidden) {
+      if (this.cShip) {
+        this.cShip.clean();
+      } else if (e.target.owner && !this.hidden) {
         e.target.owner.clean();
+      } else if (this.hidden) {
+        e.target.cleanDef();
       }
     };
   }
 
+  waitForMove() {
+    return new Promise((resolve) => {
+      this.addEventListener('mouseup', () => {
+        resolve(true);
+      }, { once: true });
+    });
+  }
+
+  hasLost() {
+    return this.Ships.every((ship) => ship.sunken);
+  }
 
   autoMove() {
     this.Ships.forEach((spc) => {
@@ -82,6 +106,18 @@ class Board extends HTMLUListElement {
       }
     });
     this.cShip = null;
+  }
+
+  autoHit() {
+    let posb = this.blocks.reduce((acc, item) => {
+      if (!item.hitFlag) {
+        acc.push(item.blkId);
+      }
+      return acc;
+    }, []);
+    posb = posb[Math.floor(Math.random() * posb.length)];
+
+    this.blocks[posb].hit();
   }
 
   getPosibleMoves(spc) {
@@ -168,11 +204,6 @@ class Board extends HTMLUListElement {
   }
 
   draw() {
-    const pNameEl = document.createElement('div');
-    pNameEl.classList.add('playerName');
-    pNameEl.style.width = '100%';
-    pNameEl.textContent = this.player.name;
-    this.appendChild(pNameEl);
     this.blocks.forEach((b) => {
       this.appendChild(b);
     });
@@ -192,6 +223,26 @@ class Board extends HTMLUListElement {
       pc.addBorders();
     });
     this.hidden = false;
+  }
+
+  lock() {
+    if (this.Ships.every((ship) => ship.status === 1)) {
+      this.locked = true;
+      return true;
+    }
+    return false;
+  }
+
+  unlock() {
+    if (this.locked) {
+      this.locked = false;
+    }
+  }
+
+  reset() {
+    this.Ships.forEach((ship) => {
+      ship.reset();
+    });
   }
 }
 

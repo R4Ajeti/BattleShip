@@ -9,6 +9,5 @@ import Game from './js/Game';
 
 const content = document.querySelector('div.content');
 const game = new Game();
-game.start();
 
 content.appendChild(game);
