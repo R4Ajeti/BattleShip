@@ -6,6 +6,14 @@ import Notifier from './Notifier';
 class Game extends HTMLDivElement {
   constructor() {
     super();
+    this.reset();
+  }
+
+  reset() {
+    while (this.firstChild) {
+      this.removeChild(this.firstChild);
+    }
+
     this.boards = [
       new Board('Player1'),
       new Board('Computer'),
@@ -49,17 +57,9 @@ class Game extends HTMLDivElement {
     this.boards[1].lock();
   }
 
-  restart() {
-    this.boards[0].reset();
-    this.boards[1].reset();
-    this.boards[1].autoMove();
-    this.boards[1].hide();
-    this.boards[1].lock();
-  }
-
   async start() {
     if (this.btn.value === 'restart') {
-      this.restart();
+      this.reset();
     }
     if (this.boards[0].lock()) {
       this.boards[1].unlock();

@@ -49,7 +49,7 @@ class Board extends HTMLUListElement {
           }
         } else if (e.target.owner && !this.hidden) {
           const pc = e.target.owner;
-          pc.selfReset();
+          pc.reset();
           pc.status = 0;
           pc.draw(e.target);
           this.cShip = pc;
@@ -237,12 +237,6 @@ class Board extends HTMLUListElement {
     if (this.locked) {
       this.locked = false;
     }
-  }
-
-  reset() {
-    this.Ships.forEach((ship) => {
-      ship.reset();
-    });
   }
 }
 

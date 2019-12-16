@@ -11,12 +11,6 @@ class Ship {
     this.sunken = false;
   }
 
-  reset() {
-    this.blocks.forEach((blk) => {
-      blk.reset();
-    });
-  }
-
   chageAxis() {
     if (this.status === 0) {
       this.axis = this.axis === 'x' ? 'y' : 'x';
@@ -108,7 +102,7 @@ class Ship {
     });
   }
 
-  selfReset() {
+  reset() {
     this.sibs.forEach((blk) => {
       this.blocks[blk].owner = null;
       this.blocks[blk].style.border = 0;

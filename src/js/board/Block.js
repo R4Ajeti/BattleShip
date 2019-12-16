@@ -15,16 +15,6 @@ class Block extends HTMLLIElement {
     this.hitFlag = false;
   }
 
-  reset() {
-    this.defColor = '#7f91a4';
-    this.removeChild(document.firstChild);
-    this.appendChild(document.createTextNode(blkId));
-    this.style.backgroundColor = this.defColor;
-    this.owner = null;
-    this.hitFlag = false;
-  }
-
-
   clean() {
     if (!this.owner) {
       this.style.backgroundColor = this.defColor;
@@ -77,6 +67,8 @@ class Block extends HTMLLIElement {
     bomb.onmouseup = e => { e.stopPropagation(); };
     bomb.onmouseout = e => { e.stopPropagation(); };
     this.textContent = '';
+
+    this.onmouseup = e => { e.stopPropagation(); };
 
     this.appendChild(bomb);
     this.hitFlag = true;
