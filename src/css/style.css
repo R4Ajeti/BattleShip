@@ -1,0 +1,9 @@
+body{
+  box-sizing: border-box;
+  background-color: rgb(58, 57, 57);
+}
+
+div.content {
+  width: min-content;
+  margin: 0 auto;
+}

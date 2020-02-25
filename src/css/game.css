@@ -1,0 +1,10 @@
+div.game {
+  display: grid;
+  grid-column-gap: 30px;
+  grid-row-gap: 10px;
+  grid-template-columns: auto auto;
+}
+
+div input{
+  grid-column: 2;
+}

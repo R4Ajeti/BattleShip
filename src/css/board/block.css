@@ -1,0 +1,11 @@
+li {
+  display: flex;
+  color: white;
+  box-sizing: border-box;
+  outline: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 5px;
+  width: 40px;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+}

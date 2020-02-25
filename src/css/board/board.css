@@ -1,0 +1,15 @@
+ul{
+  display: flex;
+  width: 400px;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  user-select: none;
+}
+
+div.playerName{
+  color: white;
+  text-align: center;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
